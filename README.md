@@ -2,7 +2,7 @@
 
 **Rude names. Serious plugins.** Mac audio plugins (AU + VST3) made in Amsterdam. Free while they're in beta.
 
-**Website and downloads:** https://cheekyplugins.github.io
+**Website and downloads:** https://cheekyplugins.github.io/cheekyplugins/
 
 | Plugin | What it is |
 |---|---|
@@ -16,13 +16,13 @@
 ![Hold Me Tight](img/hold-me-tight.png)
 
 ## Download
-Grab the DMGs from [Releases](https://github.com/cheekyplugins/cheekyplugins.github.io/releases/latest).
+Grab the DMGs from [Releases](https://github.com/cheekyplugins/cheekyplugins/releases/latest).
 They aren't signed with a paid Apple certificate yet, so the first time you install, open
 System Settings › Privacy & Security and click **Open Anyway**. The Read Me in each DMG walks you through it.
 
 Apple Silicon and Intel, macOS 11 or newer. Works in Logic, Ableton, Reaper, Cubase, Studio One, FL Studio, Bitwig and GarageBand.
 
 ## Bugs and ideas
-Open an [issue](https://github.com/cheekyplugins/cheekyplugins.github.io/issues) with your DAW, your macOS version and what you were doing.
+Open an [issue](https://github.com/cheekyplugins/cheekyplugins/issues) with your DAW, your macOS version and what you were doing.
 
 Fonts: Lilita One and Barlow, SIL Open Font License. © Cheeky Audio. All rights reserved.
