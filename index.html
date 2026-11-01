@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cheeky Audio</title>
+<meta name="description" content="Cheeky Audio: rude names, serious plugins. Free beta AU and VST3 plugins for Mac.">
+<style>
+/* Fonts are hosted here, not on Google, so visitors' details never go to a third party. */
+@font-face { font-family: "Lilita One"; src: url("fonts/LilitaOne-Regular.ttf") format("truetype"); font-display: swap }
+@font-face { font-family: "Barlow"; src: url("fonts/Barlow-Medium.ttf") format("truetype"); font-weight: 400 500; font-display: swap }
+@font-face { font-family: "Barlow"; src: url("fonts/Barlow-SemiBold.ttf") format("truetype"); font-weight: 600; font-display: swap }
+@font-face { font-family: "Barlow"; src: url("fonts/Barlow-Bold.ttf") format("truetype"); font-weight: 700; font-display: swap }
+/* Layout: a loud hero with a fanned stack of plugin faces, then one wide row per plugin
+   (picture and words swapping sides), each row tinted in that plugin's own colour. */
+:root {
+  --ink: #141a2e;        /* page */
+  --ink-2: #1c2440;      /* raised panels */
+  --line: #2c365a;
+  --fg: #eef1f8;
+  --muted: #a6aec8;
+  --sun: #f7b955;        /* the Cheeky sun, brand accent */
+  --sun-ink: #231a05;
+  --display: "Lilita One", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
+  --body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
+  --ink: #f4f5fb; --ink-2: #ffffff; --line: #d9ddec; --fg: #141a2e; --muted: #535c7a;
+  --sun: #e9a12e; --sun-ink: #231a05; color-scheme: light } }
+:root[data-theme="light"] {
+  --ink: #f4f5fb; --ink-2: #ffffff; --line: #d9ddec; --fg: #141a2e; --muted: #535c7a;
+  --sun: #e9a12e; --sun-ink: #231a05; color-scheme: light }
+
+* { box-sizing: border-box }
+body { background: var(--ink); color: var(--fg); font-family: var(--body); font-size: 18px; line-height: 1.55; overflow-x: hidden }
+.wrap { max-width: 1160px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.02; margin: 0; text-wrap: balance; letter-spacing: .005em }
+p { margin: 0 }
+a { color: inherit }
+:focus-visible { outline: 3px solid var(--sun); outline-offset: 3px; border-radius: 6px }
+
+/* top bar */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 22px }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; font-size: 15px }
+.brand svg { width: 40px; height: 40px; flex: none }
+.top nav { display: flex; gap: 22px; font-weight: 600; font-size: 16px }
+.top nav a { text-decoration: none; color: var(--muted) }
+.top nav a:hover { color: var(--fg) }
+
+/* hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 40px; align-items: center; padding-block: 40px 80px }
+.hero h1 { font-size: clamp(54px, 8.4vw, 112px); }
+.hero h1 span { color: var(--sun) }
+.lede { margin-top: 22px; font-size: 21px; color: var(--muted); max-width: 33ch }
+.lede strong { color: var(--fg); font-weight: 600 }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px }
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 999px; font-weight: 700; font-size: 17px; text-decoration: none; border: 2px solid transparent; transition: transform .15s ease }
+.btn:hover { transform: translateY(-2px) }
+.btn.primary { background: var(--sun); color: var(--sun-ink) }
+.btn.ghost { border-color: var(--line); color: var(--fg) }
+.fine { margin-top: 16px; font-size: 15px; color: var(--muted) }
+
+.stack { position: relative; aspect-ratio: 1 / .82; max-width: 100% }
+.stack img { position: absolute; width: 72%; border-radius: 12px; box-shadow: 0 18px 40px rgba(0,0,0,.35); transition: transform .35s ease }
+.stack img:nth-child(1) { left: 0;   top: 4%;  transform: rotate(-9deg) }
+.stack img:nth-child(2) { left: 26%; top: 0;   transform: rotate(6deg) }
+.stack img:nth-child(3) { left: 8%;  top: 34%; transform: rotate(-3deg) }
+.stack img:nth-child(4) { left: 30%; top: 40%; transform: rotate(8deg) }
+.stack img:nth-child(5) { left: 14%; top: 22%; transform: rotate(-1deg); z-index: 2 }
+.stack:hover img:nth-child(1) { transform: rotate(-14deg) translate(-12px, -6px) }
+.stack:hover img:nth-child(2) { transform: rotate(11deg) translate(12px, -8px) }
+.stack:hover img:nth-child(3) { transform: rotate(-7deg) translate(-10px, 10px) }
+.stack:hover img:nth-child(4) { transform: rotate(13deg) translate(12px, 10px) }
+
+/* section heads */
+.sec-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 36px }
+.sec-head h2 { font-size: clamp(38px, 5vw, 60px) }
+.sec-head p { color: var(--muted); max-width: 46ch }
+
+/* plugin rows */
+.plugins { display: grid; gap: 28px; padding-block: 20px 90px }
+.plug { --c: var(--sun); --c-ink: #1b1405; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 40px; align-items: center;
+        padding: 34px; border-radius: 28px; background: var(--ink-2); border: 1px solid var(--line); position: relative; overflow: hidden }
+.plug::before { content: ""; position: absolute; inset: 0; background: radial-gradient(120% 90% at 0% 0%, color-mix(in srgb, var(--c) 16%, transparent), transparent 60%); pointer-events: none }
+.plug:nth-child(even) { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) }
+.plug:nth-child(even) .shot { order: 2 }
+.shot { position: relative; min-width: 0 }
+.shot img { display: block; width: 100%; border-radius: 14px; box-shadow: 0 14px 34px rgba(0,0,0,.28) }
+.info { position: relative; min-width: 0; display: grid; gap: 14px; justify-items: start }
+.kind { font-size: 13px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--c) }
+.info h3 { font-size: clamp(40px, 4.6vw, 58px) }
+.tag { font-size: 21px; font-weight: 600 }
+.info ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; color: var(--muted) }
+.info li { padding-left: 22px; position: relative }
+.info li::before { content: ""; position: absolute; left: 0; top: .62em; width: 10px; height: 10px; border-radius: 50%; background: var(--c) }
+.spec { font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; border-top: 1px dashed var(--line); padding-top: 12px; width: 100% }
+.info .btn { background: var(--c); color: var(--c-ink); margin-top: 4px }
+
+.p-spread  { --c: #f2716b; --c-ink: #2a0b09 }
+.p-squeeze { --c: #f5d33a; --c-ink: #231d02 }
+.p-little  { --c: #f27bb3; --c-ink: #2b0a1a }
+.p-slap    { --c: #f08a5d; --c-ink: #2b1006 }
+.p-hold    { --c: #f7b955; --c-ink: #231a05 }
+
+/* coming soon */
+.soon { display: flex; gap: 26px; align-items: center; padding: 28px 34px; border-radius: 28px; border: 2px dashed var(--line) }
+.peach { flex: none; width: 92px; height: 92px }
+.soon h3 { font-size: 34px }
+.soon p { color: var(--muted); margin-top: 6px }
+.soon .kind { color: #f6a07a }
+
+/* install */
+.install { padding-block: 40px 90px }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; counter-reset: s }
+.steps li { counter-increment: s; padding: 24px; border-radius: 20px; background: var(--ink-2); border: 1px solid var(--line); display: grid; gap: 8px; align-content: start }
+.steps li::before { content: counter(s); font-family: var(--display); font-size: 40px; line-height: 1; color: var(--sun) }
+.steps b { font-size: 19px }
+.steps span { color: var(--muted); font-size: 16px }
+.reqs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px }
+.reqs span { padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line); font-size: 15px; font-weight: 600; color: var(--muted) }
+
+/* faq + list */
+.duo { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 28px; padding-block: 0 90px; align-items: start }
+details { border-bottom: 1px solid var(--line); padding-block: 16px }
+summary { cursor: pointer; font-weight: 700; font-size: 19px; list-style: none; display: flex; justify-content: space-between; gap: 16px }
+summary::-webkit-details-marker { display: none }
+summary::after { content: "+"; font-family: var(--display); color: var(--sun); font-size: 24px; line-height: 1 }
+details[open] summary::after { content: "–" }
+details p { color: var(--muted); margin-top: 10px; max-width: 60ch }
+.list { padding: 32px; border-radius: 28px; background: var(--sun); color: var(--sun-ink) }
+.list h2 { font-size: 40px }
+.list p { margin-top: 10px; font-weight: 500 }
+.list form { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap }
+.list input { flex: 1 1 200px; min-width: 0; padding: 14px 18px; border-radius: 999px; border: 2px solid var(--sun-ink); background: #fff8ea; color: #231a05; font: 500 17px var(--body) }
+.list button { padding: 14px 22px; border-radius: 999px; border: 0; background: var(--sun-ink); color: #fff3d6; font: 700 17px var(--body); cursor: pointer }
+.list .msg { margin-top: 12px; font-size: 15px; font-weight: 600; min-height: 1.4em }
+
+footer { border-top: 1px solid var(--line); padding-block: 30px 40px; color: var(--muted); font-size: 15px }
+footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap }
+
+@media (max-width: 900px) {
+  .hero, .plug, .plug:nth-child(even), .duo { grid-template-columns: minmax(0, 1fr) }
+  .plug:nth-child(even) .shot { order: 0 }
+  .plug { padding: 22px; gap: 24px }
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  .hero { padding-block: 10px 60px }
+}
+@media (max-width: 560px) {
+  .top nav { display: none }
+  .steps { grid-template-columns: minmax(0, 1fr) }
+  .soon { flex-direction: column; align-items: start; padding: 22px }
+  body { font-size: 17px }
+}
+@media (prefers-reduced-motion: reduce) { .btn, .stack img { transition: none } .stack:hover img { transform: none } }
+</style>
+</head>
+<body>
+
+<header class="wrap top">
+  <a class="brand" href="#top" aria-label="Cheeky Audio home">
+    <svg viewBox="0 0 64 64" aria-hidden="true">
+      <g stroke="var(--sun)" stroke-width="4" stroke-linecap="round">
+        <line x1="32" y1="3" x2="32" y2="10"/><line x1="32" y1="54" x2="32" y2="61"/>
+        <line x1="3" y1="32" x2="10" y2="32"/><line x1="54" y1="32" x2="61" y2="32"/>
+        <line x1="11.5" y1="11.5" x2="16.5" y2="16.5"/><line x1="47.5" y1="47.5" x2="52.5" y2="52.5"/>
+        <line x1="11.5" y1="52.5" x2="16.5" y2="47.5"/><line x1="47.5" y1="16.5" x2="52.5" y2="11.5"/>
+      </g>
+      <circle cx="32" cy="32" r="16" fill="none" stroke="var(--sun)" stroke-width="4"/>
+      <circle cx="26" cy="29" r="2.4" fill="var(--sun)"/><circle cx="38" cy="29" r="2.4" fill="var(--sun)"/>
+      <path d="M24 36 q8 7 16 0" fill="none" stroke="var(--sun)" stroke-width="3.4" stroke-linecap="round"/>
+    </svg>
+    Cheeky Audio
+  </a>
+  <nav aria-label="Sections">
+    <a href="#plugins">Plugins</a>
+    <a href="#install">Install</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="wrap hero">
+    <div>
+      <h1>Rude names.<br><span>Serious plugins.</span></h1>
+      <p class="lede">Mac audio plugins made in Amsterdam by a funk guitarist. <strong>Free while they're in beta.</strong> Real DSP under the jokes, with faces that pull faces back.</p>
+      <div class="ctas">
+        <a class="btn primary" data-dl="Cheeky-Audio-Bundle" href="#plugins">Download the lot</a>
+        <a class="btn ghost" href="#plugins">Meet the plugins</a>
+      </div>
+      <p class="fine">AU and VST3 for Mac · Apple Silicon and Intel · macOS 11 or newer</p>
+    </div>
+    <div class="stack" aria-hidden="true">
+      <img src="img/squeeze-me.png" alt="">
+      <img src="img/little-synths.png" alt="">
+      <img src="img/slap-tickle.png" alt="">
+      <img src="img/spread-em.png" alt="">
+      <img src="img/hold-me-tight.png" alt="">
+    </div>
+  </section>
+
+  <section class="wrap" id="plugins">
+    <div class="sec-head">
+      <h2>The line-up</h2>
+      <p>Five plugins and counting. Each one does one job properly and tries to make you laugh while it does it.</p>
+    </div>
+
+    <div class="plugins">
+      <article class="plug p-spread">
+        <div class="shot"><img src="img/spread-em.png" alt="Spread 'Em! plugin: a cartoon face shouting 'Stop it!' as the width slider hits 300%" loading="lazy"></div>
+        <div class="info">
+          <span class="kind">Stereo imager · Effect</span>
+          <h3>Spread 'Em!</h3>
+          <p class="tag">The face gets more scandalised the wider you go.</p>
+          <ul>
+            <li>Width from mono to 300%, in the mid/side domain</li>
+            <li>Asymmetry and rotation to move the centre of the image</li>
+            <li>Mono button and two live stereo scopes</li>
+          </ul>
+          <p class="spec">Width 0–300% · Asymmetry L100–R100 · Rotation ±180°</p>
+          <a class="btn" data-dl="Spread-Em" href="#plugins">Download free beta</a>
+        </div>
+      </article>
+
+      <article class="plug p-squeeze">
+        <div class="shot"><img src="img/squeeze-me.png" alt="Squeeze Me! plugin: one big 'How much?' knob, source tabs and a smiling gain-reduction meter" loading="lazy"></div>
+        <div class="info">
+          <span class="kind">Compressor · Effect</span>
+          <h3>Squeeze Me!</h3>
+          <p class="tag">A proper compressor for people who don't know what release does.</p>
+          <ul>
+            <li>Pick the source (Vocals, Drums, Bass, Guitar, Keys, Mix Bus) and turn one knob</li>
+            <li>The threshold follows your audio, so 50% means the same on a whisper or a full mix</li>
+            <li>Open the bonnet to see the real settings when you're curious</li>
+          </ul>
+          <p class="spec">Smooth / Punchy / Aggressive · Blend · Auto Level</p>
+          <a class="btn" data-dl="Squeeze-Me" href="#plugins">Download free beta</a>
+        </div>
+      </article>
+
+      <article class="plug p-little">
+        <div class="shot"><img src="img/little-synths.png" alt="Little Synths plugin: two oscillators, filter, envelope, chorus and a pink keyboard" loading="lazy"></div>
+        <div class="info">
+          <span class="kind">Polysynth · Instrument</span>
+          <h3>Little Synths</h3>
+          <p class="tag">Tell me sweet little synths.</p>
+          <ul>
+            <li>Late-80s shimmer: analogue pads, FM bells and electric piano, chiming plucked strings</li>
+            <li>10 voices, two oscillators with six waves each</li>
+            <li>A More Drama button for chorus, width and a big reverb all at once</li>
+          </ul>
+          <p class="spec">10 voices · LP / BP / HP / Notch filter · Chorus, echo, reverb</p>
+          <a class="btn" data-dl="Little-Synths" href="#plugins">Download free beta</a>
+        </div>
+      </article>
+
+      <article class="plug p-slap">
+        <div class="shot"><img src="img/slap-tickle.png" alt="Slap & Tickle plugin: big Slap and Tickle knobs with a hit display, colour sections and a Fix AI Stem robot" loading="lazy"></div>
+        <div class="info">
+          <span class="kind">Transient shaper · Effect</span>
+          <h3>Slap &amp; Tickle</h3>
+          <p class="tag">Sort your hits out.</p>
+          <ul>
+            <li>Slap for more punch, Tickle for more ring, tuned per instrument</li>
+            <li>Low, high, squash and room sections to colour the sound</li>
+            <li>Fix AI Stem tidies fizzy, phasey, smeared AI-generated stems</li>
+          </ul>
+          <p class="spec">Piano · Drums · Bass · Acoustic · Electric · Vocals · 1.5 ms latency</p>
+          <a class="btn" data-dl="Slap-Tickle" href="#plugins">Download free beta</a>
+        </div>
+      </article>
+
+      <article class="plug p-hold">
+        <div class="shot"><img src="img/hold-me-tight.png" alt="Hold Me Tight plugin: scrolling level display, eight compression styles, meters and a koala" loading="lazy"></div>
+        <div class="info">
+          <span class="kind">Pro compressor · Effect</span>
+          <h3>Hold Me Tight</h3>
+          <p class="tag">Hold, range, release. Repeat.</p>
+          <ul>
+            <li>Eight styles, from Clean and Opto to Smack and Pump</li>
+            <li>A scrolling display of what goes in, what comes out and what got squeezed</li>
+            <li>External sidechain, lookahead, mid/side and up to 4x oversampling</li>
+          </ul>
+          <p class="spec">Ratio 1:1–∞ · Knee 0–72 dB · Attack 0.005–250 ms · 32 presets</p>
+          <a class="btn" data-dl="Hold-Me-Tight" href="#plugins">Download free beta</a>
+        </div>
+      </article>
+
+      <aside class="soon" aria-label="Coming soon">
+        <svg class="peach" viewBox="0 0 100 100" aria-hidden="true">
+          <path d="M50 22 C20 18 8 48 18 70 C28 92 72 92 82 70 C92 48 80 18 50 22 Z" fill="#f6a07a"/>
+          <path d="M50 26 C46 44 46 64 50 86" stroke="#d9785a" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M50 22 C56 10 70 8 76 12 C70 20 60 22 50 22 Z" fill="#7fbf6a"/>
+          <rect x="22" y="44" width="24" height="12" rx="5" fill="#141a2e"/><rect x="54" y="44" width="24" height="12" rx="5" fill="#141a2e"/>
+          <rect x="45" y="47" width="10" height="3" fill="#141a2e"/>
+        </svg>
+        <div>
+          <span class="kind">Bass synth · Coming soon</span>
+          <h3>Gimme Some Booty</h3>
+          <p>A disco and funk bass synth. It works and it slaps. It just needs to get its trousers on.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="wrap install" id="install">
+    <div class="sec-head">
+      <h2>Installing</h2>
+      <p>There's one extra step, because Apple wants a paid certificate before it will wave an installer through without asking. Nothing is wrong with the plugins.</p>
+    </div>
+    <ol class="steps">
+      <li><b>Download</b><span>Grab a single plugin or the whole bundle. Each one is a DMG with an installer and a Read Me.</span></li>
+      <li><b>Run the installer</b><span>Double-click the .pkg. macOS will say it can't verify the developer. Click Done.</span></li>
+      <li><b>Open Anyway</b><span>System Settings › Privacy &amp; Security. Scroll down, click Open Anyway, enter your password.</span></li>
+      <li><b>Rescan</b><span>Restart your DAW or rescan plugins. Look under Cheeky Audio.</span></li>
+    </ol>
+    <div class="reqs">
+      <span>Logic</span><span>Ableton Live</span><span>Reaper</span><span>Cubase</span><span>Studio One</span><span>FL Studio</span><span>Bitwig</span><span>GarageBand</span>
+    </div>
+  </section>
+
+  <section class="wrap duo" id="faq">
+    <div>
+      <div class="sec-head"><h2>Questions</h2></div>
+      <details open><summary>Are they really free?</summary><p>Yes, for the whole beta. In return, tell me what breaks and which presets sound like a kazoo.</p></details>
+      <details><summary>Windows?</summary><p>Not yet. The Mac versions come first. Windows is on the list once they've settled.</p></details>
+      <details><summary>Is it safe to click Open Anyway?</summary><p>The warning appears for any installer that isn't signed with Apple's paid developer certificate. The installer only puts the AU and VST3 files into your Plug-Ins folders.</p></details>
+      <details><summary>How do I uninstall?</summary><p>Delete the plugin from /Library/Audio/Plug-Ins/Components and /Library/Audio/Plug-Ins/VST3. In Finder, use Go › Go to Folder.</p></details>
+      <details><summary>Found a bug?</summary><p>Lovely, in a manner of speaking. Report it on <a data-issues href="#faq">GitHub</a> with your DAW, your macOS version and what you were doing when it went wrong.</p></details>
+    </div>
+    <div class="list" id="list">
+      <h2>Tell me when it's out</h2>
+      <p>One email when a new plugin lands or a beta becomes 1.0. No spam, no "just checking in".</p>
+      <form id="signup" novalidate>
+        <label for="email" class="visually-hidden" style="position:absolute;left:-9999px">Email address</label>
+        <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+        <button type="submit">Put me on the list</button>
+      </form>
+      <p class="msg" id="msg" role="status"></p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© Cheeky Audio · Made in Amsterdam</span>
+    <span>AU is a trademark of Apple Inc. VST is a trademark of Steinberg Media Technologies GmbH.</span>
+  </div>
+</footer>
+
+<script>
+/* ---- Settings: fill these in once, everything else follows ---------------------------- */
+const CONFIG = {
+  repo: "cheekyplugins/cheekyplugins.github.io",   // GitHub "name/repo"
+  version: "1.0.0-beta1",
+  signup: ""           // a form endpoint, e.g. a Buttondown or Formspree URL
+};
+/* --------------------------------------------------------------------------------------- */
+const base = CONFIG.repo ? `https://github.com/${CONFIG.repo}` : "";
+document.querySelectorAll("[data-dl]").forEach(a => {
+  if (base) a.href = `${base}/releases/latest/download/${a.dataset.dl}-${CONFIG.version}.dmg`;
+});
+document.querySelectorAll("[data-issues]").forEach(a => { if (base) a.href = `${base}/issues`; });
+
+const form = document.getElementById("signup"), msg = document.getElementById("msg");
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  const email = form.email.value.trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { msg.textContent = "That email address doesn't look right. Check it and try again."; return; }
+  if (!CONFIG.signup) { msg.textContent = "The list opens soon. Until then, watch the GitHub page for releases."; return; }
+  try {
+    const r = await fetch(CONFIG.signup, { method: "POST", headers: { "Accept": "application/json" }, body: new FormData(form) });
+    msg.textContent = r.ok ? "You're on the list. Cheers!" : "That didn't go through. Try again in a minute.";
+    if (r.ok) form.reset();
+  } catch { msg.textContent = "That didn't go through. Check your connection and try again."; }
+});
+</script>
+</body>
+</html>
