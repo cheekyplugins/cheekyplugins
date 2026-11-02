@@ -95,7 +95,10 @@ a { color: inherit }
 .info li { padding-left: 22px; position: relative }
 .info li::before { content: ""; position: absolute; left: 0; top: .62em; width: 10px; height: 10px; border-radius: 50%; background: var(--c) }
 .spec { font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; border-top: 1px dashed var(--line); padding-top: 12px; width: 100% }
-.info .btn { background: var(--c); color: var(--c-ink); margin-top: 4px }
+.info .btn { background: var(--c); color: var(--c-ink) }
+.info .btn.more { background: transparent; color: var(--fg); border-color: var(--line) }
+.info h3 a { text-decoration: none }
+.info h3 a:hover { color: var(--c) }
 
 .p-spread  { --c: #f2716b; --c-ink: #2a0b09 }
 .p-squeeze { --c: #f5d33a; --c-ink: #231d02 }
@@ -210,7 +213,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
         <div class="shot"><img src="img/spread-em.png" alt="Spread 'Em! plugin: a cartoon face shouting 'Stop it!' as the width slider hits 300%" loading="lazy"></div>
         <div class="info">
           <span class="kind">Stereo imager · Effect</span>
-          <h3>Spread 'Em!</h3>
+          <h3><a href="plugins/spread-em.html">Spread 'Em!</a></h3>
           <p class="tag">The face gets more scandalised the wider you go.</p>
           <ul>
             <li>Width from mono to 300%, in the mid/side domain</li>
@@ -218,7 +221,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
             <li>Mono button and two live stereo scopes</li>
           </ul>
           <p class="spec">Width 0–300% · Asymmetry L100–R100 · Rotation ±180°</p>
-          <a class="btn" data-dl="Spread-Em" href="#plugins">Download free beta</a>
+          <div class="ctas" style="margin-top:4px"><a class="btn" data-dl="Spread-Em" href="#plugins">Download free beta</a><a class="btn ghost more" href="plugins/spread-em.html">More about it</a></div>
         </div>
       </article>
 
@@ -226,7 +229,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
         <div class="shot"><img src="img/squeeze-me.png" alt="Squeeze Me! plugin: one big 'How much?' knob, source tabs and a smiling gain-reduction meter" loading="lazy"></div>
         <div class="info">
           <span class="kind">Compressor · Effect</span>
-          <h3>Squeeze Me!</h3>
+          <h3><a href="plugins/squeeze-me.html">Squeeze Me!</a></h3>
           <p class="tag">A proper compressor for people who don't know what release does.</p>
           <ul>
             <li>Pick the source (Vocals, Drums, Bass, Guitar, Keys, Mix Bus) and turn one knob</li>
@@ -234,7 +237,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
             <li>Open the bonnet to see the real settings when you're curious</li>
           </ul>
           <p class="spec">Smooth / Punchy / Aggressive · Blend · Auto Level</p>
-          <a class="btn" data-dl="Squeeze-Me" href="#plugins">Download free beta</a>
+          <div class="ctas" style="margin-top:4px"><a class="btn" data-dl="Squeeze-Me" href="#plugins">Download free beta</a><a class="btn ghost more" href="plugins/squeeze-me.html">More about it</a></div>
         </div>
       </article>
 
@@ -242,7 +245,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
         <div class="shot"><img src="img/little-synths.png" alt="Little Synths plugin: two oscillators, filter, envelope, chorus and a pink keyboard" loading="lazy"></div>
         <div class="info">
           <span class="kind">Polysynth · Instrument</span>
-          <h3>Little Synths</h3>
+          <h3><a href="plugins/little-synths.html">Little Synths</a></h3>
           <p class="tag">Tell me sweet little synths.</p>
           <ul>
             <li>Late-80s shimmer: analogue pads, FM bells and electric piano, chiming plucked strings</li>
@@ -250,7 +253,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
             <li>A More Drama button for chorus, width and a big reverb all at once</li>
           </ul>
           <p class="spec">10 voices · LP / BP / HP / Notch filter · Chorus, echo, reverb</p>
-          <a class="btn" data-dl="Little-Synths" href="#plugins">Download free beta</a>
+          <div class="ctas" style="margin-top:4px"><a class="btn" data-dl="Little-Synths" href="#plugins">Download free beta</a><a class="btn ghost more" href="plugins/little-synths.html">More about it</a></div>
         </div>
       </article>
 
@@ -258,7 +261,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
         <div class="shot"><img src="img/slap-tickle.png" alt="Slap & Tickle plugin: big Slap and Tickle knobs with a hit display, colour sections and a Fix AI Stem robot" loading="lazy"></div>
         <div class="info">
           <span class="kind">Transient shaper · Effect</span>
-          <h3>Slap &amp; Tickle</h3>
+          <h3><a href="plugins/slap-tickle.html">Slap &amp; Tickle</a></h3>
           <p class="tag">Sort your hits out.</p>
           <ul>
             <li>Slap for more punch, Tickle for more ring, tuned per instrument</li>
@@ -266,7 +269,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
             <li>Fix AI Stem tidies fizzy, phasey, smeared AI-generated stems</li>
           </ul>
           <p class="spec">Piano · Drums · Bass · Acoustic · Electric · Vocals · 1.5 ms latency</p>
-          <a class="btn" data-dl="Slap-Tickle" href="#plugins">Download free beta</a>
+          <div class="ctas" style="margin-top:4px"><a class="btn" data-dl="Slap-Tickle" href="#plugins">Download free beta</a><a class="btn ghost more" href="plugins/slap-tickle.html">More about it</a></div>
         </div>
       </article>
 
@@ -274,7 +277,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
         <div class="shot"><img src="img/hold-me-tight.png" alt="Hold Me Tight plugin: scrolling level display, eight compression styles, meters and a koala" loading="lazy"></div>
         <div class="info">
           <span class="kind">Pro compressor · Effect</span>
-          <h3>Hold Me Tight</h3>
+          <h3><a href="plugins/hold-me-tight.html">Hold Me Tight</a></h3>
           <p class="tag">Hold, range, release. Repeat.</p>
           <ul>
             <li>Eight styles, from Clean and Opto to Smack and Pump</li>
@@ -282,7 +285,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
             <li>External sidechain, lookahead, mid/side and up to 4x oversampling</li>
           </ul>
           <p class="spec">Ratio 1:1–∞ · Knee 0–72 dB · Attack 0.005–250 ms · 32 presets</p>
-          <a class="btn" data-dl="Hold-Me-Tight" href="#plugins">Download free beta</a>
+          <div class="ctas" style="margin-top:4px"><a class="btn" data-dl="Hold-Me-Tight" href="#plugins">Download free beta</a><a class="btn ghost more" href="plugins/hold-me-tight.html">More about it</a></div>
         </div>
       </article>
 

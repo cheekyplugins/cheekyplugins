@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Little Synths · Cheeky Audio</title>
+<meta name="description" content="Little Synths: Tell me sweet little synths. Free beta polysynth · instrument plugin for Mac (AU and VST3).">
+<meta property="og:title" content="Little Synths by Cheeky Audio">
+<meta property="og:description" content="Tell me sweet little synths.">
+<meta property="og:image" content="https://cheekyplugins.github.io/cheekyplugins/img/little-synths.png">
+<style>
+/* Fonts are hosted here, not on Google, so visitors' details never go to a third party. */
+@font-face { font-family: "Lilita One"; src: url("../fonts/LilitaOne-Regular.ttf") format("truetype"); font-display: swap }
+@font-face { font-family: "Barlow"; src: url("../fonts/Barlow-Medium.ttf") format("truetype"); font-weight: 400 500; font-display: swap }
+@font-face { font-family: "Barlow"; src: url("../fonts/Barlow-SemiBold.ttf") format("truetype"); font-weight: 600; font-display: swap }
+@font-face { font-family: "Barlow"; src: url("../fonts/Barlow-Bold.ttf") format("truetype"); font-weight: 700; font-display: swap }
+/* Layout: a loud hero with a fanned stack of plugin faces, then one wide row per plugin
+   (picture and words swapping sides), each row tinted in that plugin's own colour. */
+:root {
+  --ink: #141a2e;        /* page */
+  --ink-2: #1c2440;      /* raised panels */
+  --line: #2c365a;
+  --fg: #eef1f8;
+  --muted: #a6aec8;
+  --sun: #f7b955;        /* the Cheeky sun, brand accent */
+  --sun-ink: #231a05;
+  --display: "Lilita One", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
+  --body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
+  --ink: #f4f5fb; --ink-2: #ffffff; --line: #d9ddec; --fg: #141a2e; --muted: #535c7a;
+  --sun: #e9a12e; --sun-ink: #231a05; color-scheme: light } }
+:root[data-theme="light"] {
+  --ink: #f4f5fb; --ink-2: #ffffff; --line: #d9ddec; --fg: #141a2e; --muted: #535c7a;
+  --sun: #e9a12e; --sun-ink: #231a05; color-scheme: light }
+
+* { box-sizing: border-box }
+body { background: var(--ink); color: var(--fg); font-family: var(--body); font-size: 18px; line-height: 1.55; overflow-x: hidden }
+.wrap { max-width: 1160px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.02; margin: 0; text-wrap: balance; letter-spacing: .005em }
+p { margin: 0 }
+a { color: inherit }
+:focus-visible { outline: 3px solid var(--sun); outline-offset: 3px; border-radius: 6px }
+
+/* top bar */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 22px }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; font-size: 15px }
+.brand svg { width: 40px; height: 40px; flex: none }
+.top nav { display: flex; gap: 22px; font-weight: 600; font-size: 16px }
+.top nav a { text-decoration: none; color: var(--muted) }
+.top nav a:hover { color: var(--fg) }
+
+/* hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 40px; align-items: center; padding-block: 40px 80px }
+.hero h1 { font-size: clamp(54px, 8.4vw, 112px); }
+.hero h1 span { color: var(--sun) }
+.lede { margin-top: 22px; font-size: 21px; color: var(--muted); max-width: 33ch }
+.lede strong { color: var(--fg); font-weight: 600 }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px }
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 999px; font-weight: 700; font-size: 17px; text-decoration: none; border: 2px solid transparent; transition: transform .15s ease }
+.btn:hover { transform: translateY(-2px) }
+.btn.primary { background: var(--sun); color: var(--sun-ink) }
+.btn.ghost { border-color: var(--line); color: var(--fg) }
+.fine { margin-top: 16px; font-size: 15px; color: var(--muted) }
+
+.stack { position: relative; aspect-ratio: 1 / .82; max-width: 100% }
+.stack img { position: absolute; width: 72%; border-radius: 12px; box-shadow: 0 18px 40px rgba(0,0,0,.35); transition: transform .35s ease }
+.stack img:nth-child(1) { left: 0;   top: 4%;  transform: rotate(-9deg) }
+.stack img:nth-child(2) { left: 26%; top: 0;   transform: rotate(6deg) }
+.stack img:nth-child(3) { left: 8%;  top: 34%; transform: rotate(-3deg) }
+.stack img:nth-child(4) { left: 30%; top: 40%; transform: rotate(8deg) }
+.stack img:nth-child(5) { left: 14%; top: 22%; transform: rotate(-1deg); z-index: 2 }
+.stack:hover img:nth-child(1) { transform: rotate(-14deg) translate(-12px, -6px) }
+.stack:hover img:nth-child(2) { transform: rotate(11deg) translate(12px, -8px) }
+.stack:hover img:nth-child(3) { transform: rotate(-7deg) translate(-10px, 10px) }
+.stack:hover img:nth-child(4) { transform: rotate(13deg) translate(12px, 10px) }
+
+/* section heads */
+.sec-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 36px }
+.sec-head h2 { font-size: clamp(38px, 5vw, 60px) }
+.sec-head p { color: var(--muted); max-width: 46ch }
+
+/* plugin rows */
+.plugins { display: grid; gap: 28px; padding-block: 20px 90px }
+.plug { --c: var(--sun); --c-ink: #1b1405; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 40px; align-items: center;
+        padding: 34px; border-radius: 28px; background: var(--ink-2); border: 1px solid var(--line); position: relative; overflow: hidden }
+.plug::before { content: ""; position: absolute; inset: 0; background: radial-gradient(120% 90% at 0% 0%, color-mix(in srgb, var(--c) 16%, transparent), transparent 60%); pointer-events: none }
+.plug:nth-child(even) { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) }
+.plug:nth-child(even) .shot { order: 2 }
+.shot { position: relative; min-width: 0 }
+.shot img { display: block; width: 100%; border-radius: 14px; box-shadow: 0 14px 34px rgba(0,0,0,.28) }
+.info { position: relative; min-width: 0; display: grid; gap: 14px; justify-items: start }
+.kind { font-size: 13px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--c) }
+.info h3 { font-size: clamp(40px, 4.6vw, 58px) }
+.tag { font-size: 21px; font-weight: 600 }
+.info ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; color: var(--muted) }
+.info li { padding-left: 22px; position: relative }
+.info li::before { content: ""; position: absolute; left: 0; top: .62em; width: 10px; height: 10px; border-radius: 50%; background: var(--c) }
+.spec { font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; border-top: 1px dashed var(--line); padding-top: 12px; width: 100% }
+.info .btn { background: var(--c); color: var(--c-ink); margin-top: 4px }
+
+.p-spread  { --c: #f2716b; --c-ink: #2a0b09 }
+.p-squeeze { --c: #f5d33a; --c-ink: #231d02 }
+.p-little  { --c: #f27bb3; --c-ink: #2b0a1a }
+.p-slap    { --c: #f08a5d; --c-ink: #2b1006 }
+.p-hold    { --c: #f7b955; --c-ink: #231a05 }
+
+/* coming soon */
+.soon { display: flex; gap: 26px; align-items: center; padding: 28px 34px; border-radius: 28px; border: 2px dashed var(--line) }
+.peach { flex: none; width: 92px; height: 92px }
+.soon h3 { font-size: 34px }
+.soon p { color: var(--muted); margin-top: 6px }
+.soon .kind { color: #f6a07a }
+
+/* install */
+.install { padding-block: 40px 90px }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; counter-reset: s }
+.steps li { counter-increment: s; padding: 24px; border-radius: 20px; background: var(--ink-2); border: 1px solid var(--line); display: grid; gap: 8px; align-content: start }
+.steps li::before { content: counter(s); font-family: var(--display); font-size: 40px; line-height: 1; color: var(--sun) }
+.steps b { font-size: 19px }
+.steps span { color: var(--muted); font-size: 16px }
+.reqs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px }
+.reqs span { padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line); font-size: 15px; font-weight: 600; color: var(--muted) }
+
+/* faq + list */
+.duo { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 28px; padding-block: 0 90px; align-items: start }
+details { border-bottom: 1px solid var(--line); padding-block: 16px }
+summary { cursor: pointer; font-weight: 700; font-size: 19px; list-style: none; display: flex; justify-content: space-between; gap: 16px }
+summary::-webkit-details-marker { display: none }
+summary::after { content: "+"; font-family: var(--display); color: var(--sun); font-size: 24px; line-height: 1 }
+details[open] summary::after { content: "–" }
+details p { color: var(--muted); margin-top: 10px; max-width: 60ch }
+.list { padding: 32px; border-radius: 28px; background: var(--sun); color: var(--sun-ink) }
+.list h2 { font-size: 40px }
+.list p { margin-top: 10px; font-weight: 500 }
+.list form { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap }
+.list input { flex: 1 1 200px; min-width: 0; padding: 14px 18px; border-radius: 999px; border: 2px solid var(--sun-ink); background: #fff8ea; color: #231a05; font: 500 17px var(--body) }
+.list button { padding: 14px 22px; border-radius: 999px; border: 0; background: var(--sun-ink); color: #fff3d6; font: 700 17px var(--body); cursor: pointer }
+.list .msg { margin-top: 12px; font-size: 15px; font-weight: 600; min-height: 1.4em }
+
+footer { border-top: 1px solid var(--line); padding-block: 30px 40px; color: var(--muted); font-size: 15px }
+footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap }
+
+@media (max-width: 900px) {
+  .hero, .plug, .plug:nth-child(even), .duo { grid-template-columns: minmax(0, 1fr) }
+  .plug:nth-child(even) .shot { order: 0 }
+  .plug { padding: 22px; gap: 24px }
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  .hero { padding-block: 10px 60px }
+}
+@media (max-width: 560px) {
+  .top nav { display: none }
+  .steps { grid-template-columns: minmax(0, 1fr) }
+  .soon { flex-direction: column; align-items: start; padding: 22px }
+  body { font-size: 17px }
+}
+@media (prefers-reduced-motion: reduce) { .btn, .stack img { transition: none } .stack:hover img { transform: none } }
+
+.crumb { font-weight: 600; font-size: 16px; color: var(--muted); text-decoration: none }
+.crumb:hover { color: var(--fg) }
+.p-hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 44px; align-items: center; padding-block: 30px 70px; position: relative }
+.p-hero h1 { font-size: clamp(56px, 8vw, 104px) }
+.p-hero .tag { font-size: 24px; font-weight: 600; margin-top: 14px; color: var(--c) }
+.p-hero .lede { max-width: 38ch }
+.p-hero .btn.buy { background: var(--c); color: var(--c-ink) }
+.p-hero .shot img { display: block; width: 100%; border-radius: 16px; box-shadow: 0 24px 50px rgba(0,0,0,.35) }
+.badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px }
+.badges span { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); font-size: 14px; font-weight: 700; color: var(--muted) }
+.badges span.hot { border-color: var(--c); color: var(--c) }
+.block { padding-block: 0 80px }
+.block h2 { font-size: clamp(34px, 4.4vw, 52px); margin-bottom: 26px }
+.feats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px }
+.feat { padding: 26px; border-radius: 22px; background: var(--ink-2); border: 1px solid var(--line); display: grid; gap: 10px; align-content: start }
+.feat h3 { font-size: 28px; color: var(--c) }
+.feat p { color: var(--muted) }
+.sounds { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start }
+.sounds .prose { display: grid; gap: 16px; font-size: 19px; max-width: 60ch }
+.sounds .prose p:first-child { font-size: 23px; font-weight: 600 }
+.goodon { padding: 26px; border-radius: 22px; border: 2px dashed var(--line); display: grid; gap: 12px }
+.goodon h3 { font-size: 26px }
+.goodon ul { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px }
+.goodon li { padding: 7px 14px; border-radius: 999px; background: color-mix(in srgb, var(--c) 16%, transparent); font-weight: 600; font-size: 15px }
+.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 18px }
+table { width: 100%; border-collapse: collapse; font-size: 16px; min-width: 560px }
+th, td { text-align: left; padding: 13px 18px; border-bottom: 1px solid var(--line); vertical-align: top }
+th { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 700 }
+td:first-child { font-weight: 700; white-space: nowrap }
+td:nth-child(2) { font-variant-numeric: tabular-nums; color: var(--c); white-space: nowrap; font-weight: 600 }
+tr:last-child td { border-bottom: 0 }
+.specs { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 18px; overflow: hidden }
+.specs div { padding: 18px 20px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 0 -1px -1px 0 }
+.specs dt { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 700 }
+.specs dd { margin: 4px 0 0; font-weight: 600 }
+.honest { margin-top: 18px; color: var(--muted); font-size: 16px; max-width: 70ch }
+.next { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-block: 0 70px }
+.next a { text-decoration: none; font-family: var(--display); font-size: 30px }
+.next small { display: block; font-family: var(--body); font-size: 14px; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; font-weight: 700 }
+@media (max-width: 900px) { .p-hero, .sounds { grid-template-columns: minmax(0, 1fr) } .feats { grid-template-columns: minmax(0, 1fr) } .p-hero .shot { order: -1 } }
+</style>
+</head>
+<body>
+<header class="wrap top">
+  <a class="brand" href="../" aria-label="Cheeky Audio home"><svg viewBox="0 0 64 64" aria-hidden="true">
+      <g stroke="var(--sun)" stroke-width="4" stroke-linecap="round">
+        <line x1="32" y1="3" x2="32" y2="10"/><line x1="32" y1="54" x2="32" y2="61"/>
+        <line x1="3" y1="32" x2="10" y2="32"/><line x1="54" y1="32" x2="61" y2="32"/>
+        <line x1="11.5" y1="11.5" x2="16.5" y2="16.5"/><line x1="47.5" y1="47.5" x2="52.5" y2="52.5"/>
+        <line x1="11.5" y1="52.5" x2="16.5" y2="47.5"/><line x1="47.5" y1="16.5" x2="52.5" y2="11.5"/>
+      </g>
+      <circle cx="32" cy="32" r="16" fill="none" stroke="var(--sun)" stroke-width="4"/>
+      <circle cx="26" cy="29" r="2.4" fill="var(--sun)"/><circle cx="38" cy="29" r="2.4" fill="var(--sun)"/>
+      <path d="M24 36 q8 7 16 0" fill="none" stroke="var(--sun)" stroke-width="3.4" stroke-linecap="round"/>
+    </svg>
+    Cheeky Audio</a>
+  <nav aria-label="Sections"><a href="../#plugins">All plugins</a><a href="../#install">Install</a><a href="../#faq">FAQ</a></nav>
+</header>
+<main class="p-little" style="--c:#f27bb3;--c-ink:#2b0a1a">
+  <section class="wrap p-hero">
+    <div>
+      <a class="crumb" href="../#plugins">← All plugins</a>
+      <p class="kind" style="margin-top:22px">Polysynth · Instrument</p>
+      <h1>Little Synths</h1>
+      <p class="tag">Tell me sweet little synths.</p>
+      <p class="lede">A 10-voice polysynth for that glossy late-80s soft-rock shimmer: lush analogue pads, glassy FM keys and chiming plucked strings, with a More Drama button for when it needs to fill a stadium.</p>
+      <div class="ctas"><a class="btn buy" data-dl="Little-Synths" href="../#plugins">Download free beta</a><a class="btn ghost" href="#controls">Every control</a></div>
+      <div class="badges"><span class=hot>Free beta</span><span>AU + VST3 instrument</span><span>Apple Silicon + Intel</span><span>10 voices</span></div>
+    </div>
+    <div class="shot"><img src="../img/little-synths.png" alt="Little Synths with two oscillators, filter, envelope, chorus and a pink keyboard"></div>
+  </section>
+
+  <section class="wrap block"><h2>Why you'll like it</h2><div class="feats"><div class="feat"><h3>Six waves, two oscillators</h3><p>Sine, square, saw and triangle, plus Chime, a modelled plucked string, and FM, which runs from electric piano to bells on one knob.</p></div><div class="feat"><h3>Mix means character</h3><p>One knob per oscillator does the musical thing for that wave: pulse width, stacked-saw thickness, warmth, skew, brightness or EP-to-bells.</p></div><div class="feat"><h3>More Drama</h3><p>Pushes chorus, width and a big reverb together. It&#x27;s the button you&#x27;ll press first and then pretend you didn&#x27;t need.</p></div></div></section>
+
+  <section class="wrap block"><h2>What it sounds like</h2>
+    <div class="sounds"><div class="prose"><p>Think Tango in the Night-era shimmer: wide, chorused and slightly too beautiful.</p><p>The Chime wave doubles itself with a late, slightly detuned second take, like the slowed-down tape guitars on those records. The FM side gives you the glassy keys every 80s ballad was legally required to have.</p><p>Under it all is tape wobble, ping-pong echo and an eight-line reverb, set by the presets and automatable from your DAW.</p></div>
+    <div class="goodon"><h3>Good on</h3><ul><li>80s pads</li><li>Glassy keys</li><li>Bells</li><li>Plucks</li><li>Ballads</li><li>Synth-pop</li><li>Film cues</li></ul></div></div>
+  </section>
+
+  <section class="wrap block" id="controls"><h2>Every control</h2>
+    <div class="tbl"><table><thead><tr><th>Control</th><th>Range</th><th>What it does</th></tr></thead><tbody><tr><td>Oscillators 1 &amp; 2</td><td>6 waves each</td><td>Sine, Square, Saw, Triangle, Chime, FM, with volume, octave, detune and Mix</td></tr><tr><td>Filter</td><td>LP / BP / HP / Notch</td><td>Cutoff, resonance and envelope amount</td></tr><tr><td>Envelope</td><td>ADSR</td><td>Drag the points on screen or turn the knobs</td></tr><tr><td>Chorus</td><td>Depth, rate, mix</td><td>The 80s, in a knob</td></tr><tr><td>Drive, Tone, Width</td><td>Knobs</td><td>Grit, brightness and stereo spread</td></tr><tr><td>More Drama</td><td>Button</td><td>Chorus, width and big reverb together</td></tr><tr><td>Performance</td><td>Wheels + keys</td><td>Mod wheel vibrato, ±2 semitone bend, sustain pedal</td></tr></tbody></table></div>
+  </section>
+
+  <section class="wrap block"><h2>The details</h2><dl class="specs"><div><dt>Type</dt><dd>Polyphonic synth</dd></div><div><dt>Voices</dt><dd>10</dd></div><div><dt>Formats</dt><dd>AU, VST3 instrument</dd></div><div><dt>Mac</dt><dd>Apple Silicon and Intel, macOS 11+</dd></div><div><dt>Effects</dt><dd>Tape, chorus, echo, reverb</dd></div><div><dt>Price</dt><dd>Free during the beta</dd></div></dl><p class="honest">The on-screen keyboard is playable, so you can audition presets without a MIDI controller.</p></section>
+
+  <nav class="wrap next" aria-label="More plugins">
+    <a href="../#plugins"><small>Back to</small>All plugins</a>
+    <a href="slap-tickle.html" style="text-align:right"><small>Next up</small>Slap &amp; Tickle →</a>
+  </nav>
+</main>
+<footer>
+  <div class="wrap">
+    <span>© Cheeky Audio · Made in Amsterdam</span>
+    <span>AU is a trademark of Apple Inc. VST is a trademark of Steinberg Media Technologies GmbH.</span>
+  </div>
+</footer>
+<script>
+const repo = "cheekyplugins/cheekyplugins", version = "1.0.0-beta1";
+document.querySelectorAll("[data-dl]").forEach(a => a.href = `https://github.com/${repo}/releases/latest/download/${a.dataset.dl}-${version}.dmg`);
+</script>
+</body>
+</html>
