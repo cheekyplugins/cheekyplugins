@@ -113,6 +113,17 @@ a { color: inherit }
 .soon p { color: var(--muted); margin-top: 6px }
 .soon .kind { color: #f6a07a }
 
+
+/* story */
+.story { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 48px; align-items: start; padding-block: 10px 90px }
+.story .pull { font-family: var(--display); font-size: clamp(38px, 4.8vw, 62px); line-height: 1.05; text-wrap: balance }
+.story .pull span { color: var(--sun) }
+.story .kind { color: var(--sun); display: block; margin-bottom: 16px }
+.story .prose { display: grid; gap: 18px; font-size: 19px; max-width: 62ch }
+.story .prose p:first-child { font-size: 22px; font-weight: 600 }
+.story .sig { font-family: var(--display); font-size: 28px; color: var(--sun) }
+@media (max-width: 900px) { .story { grid-template-columns: minmax(0, 1fr); gap: 24px } }
+
 /* install */
 .install { padding-block: 40px 90px }
 .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; counter-reset: s }
@@ -177,6 +188,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
   </a>
   <nav aria-label="Sections">
     <a href="#plugins">Plugins</a>
+    <a href="#story">Story</a>
     <a href="#install">Install</a>
     <a href="#faq">FAQ</a>
   </nav>
@@ -303,6 +315,20 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
           <p>A disco and funk bass synth. It works and it slaps. It just needs to get its trousers on.</p>
         </div>
       </aside>
+    </div>
+  </section>
+
+  <section class="wrap story" id="story">
+    <div>
+      <span class="kind">Why I made these</span>
+      <p class="pull">Plenty of plugins came close. <span>Few did quite the right thing.</span></p>
+    </div>
+    <div class="prose">
+      <p>I've been producing music for 20 years, mostly funk and disco, from a home studio in Amsterdam.</p>
+      <p>In that time I've bought more plugins than I'd like to admit. Lots of them nearly did it for me. They sounded great but buried the one control I needed, or did nine things when I wanted one, or brought my laptop to its knees the moment I put them on a few tracks.</p>
+      <p>AI coding tools are what made it possible for one musician to build his own. But these aren't plugins I typed a wish into a chatbot for and shipped. Each one started as a gap in my own sessions. I decided what every plugin should do and who it's for, which features the big names leave out, what every control is called and how it should look and behave. Then I tested them on my own tracks until they earned their place.</p>
+      <p>They're also built to be light. My own machine is an 8 GB MacBook Air. If a plugin makes it sweat, it doesn't ship.</p>
+      <p class="sig">Tom, Cheeky Audio</p>
     </div>
   </section>
 
